@@ -8,13 +8,12 @@ ServerList = List[Server]
 
 class Servers(Serverpilot):
     def get_servers(self) -> ServerList:
-        raw_servers = self._request('GET', 'servers')
-        server_objects = []
+        servers = []
 
-        for raw_server in raw_servers:
-            server_objects.append(Server(raw_server))
+        for server in self._request('GET', 'servers'):
+            servers.append(Server(server))
 
-        return server_objects
+        return servers
 
     def get_server(self, id: str) -> Server:
         return Server(self._request('GET', 'servers/{}'.format(id)))
