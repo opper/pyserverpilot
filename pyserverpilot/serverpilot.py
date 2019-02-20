@@ -1,7 +1,6 @@
 import requests
 from .models.error import ServerpilotError
 from requests.auth import HTTPBasicAuth
-from requests import Response
 import json
 
 from .models.server import Server
@@ -20,7 +19,7 @@ class Serverpilot:
         self.client_id = client_id
         self.api_key = api_key
 
-    def _request(self, method: str = '', endpoint: str = '', data: str or dict = None, headers: dict = None) -> Response:
+    def _request(self, method: str = '', endpoint: str = '', data: str or dict = None, headers: dict = None) -> dict:
         if data is None:
             data = {}
 
