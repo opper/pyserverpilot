@@ -42,10 +42,10 @@ class Serverpilot:
         if response.status_code != 200:
             raise ServerpilotError(response.status_code, response.json()['error']['message'])
 
-        return response.json()
+        return response.json()['data']
 
     def get_servers(self):
-        raw_servers = self._request('GET', 'servers').json()['data']
+        raw_servers = self._request('GET', 'servers')
         server_objects = []
 
         for raw_server in raw_servers:
