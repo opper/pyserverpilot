@@ -1,9 +1,10 @@
-import requests
-from .models.error import ServerpilotError
-from requests.auth import HTTPBasicAuth
+import importlib
 import json
 
-from .models.server import Server
+import requests
+from requests.auth import HTTPBasicAuth
+
+from .models.error import ServerpilotError
 
 
 class Serverpilot:
@@ -12,21 +13,20 @@ class Serverpilot:
 
     BASE_URL = 'https://api.serverpilot.io/v1/{}'
 
-    def __init__(self, client_id: str = '', api_key: str = ''):
+    def __init__(self, client_id: str = '', api_key: str = '') -> None:
         if client_id is '' or api_key is '':
             raise ValueError('Client ID and API keys are required')
 
         self.client_id = client_id
         self.api_key = api_key
 
-    def _request(self, method: str = '', endpoint: str = '', data: str or dict = None, headers: dict = None) -> dict:
+    def _request(self, method: str = '', endpoint: str = '', data: str or dict = None) -> dict:
         if data is None:
             data = {}
 
-        if headers is None:
-            headers = {
-                'Content-Type': 'application/json'
-            }
+        headers = {
+            'Content-Type': 'application/json',
+        }
 
         response = requests.request(
             method,
@@ -44,11 +44,9 @@ class Serverpilot:
 
         return response.json()['data']
 
-    def get_servers(self):
-        raw_servers = self._request('GET', 'servers')
-        server_objects = []
+    @classmethod
+    def client(cls, module_name: str = '', client_id: str = '', api_key: str = ''):
+        module = importlib.import_module('pyserverpilot.modules')
+        class_ = getattr(module, module_name.capitalize())
 
-        for raw_server in raw_servers:
-            server_objects.append(Server(raw_server))
-
-        return server_objects
+        return class_(client_id, api_key)
