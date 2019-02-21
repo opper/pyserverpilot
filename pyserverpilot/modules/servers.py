@@ -29,7 +29,5 @@ class Servers(Serverpilot):
                 raise TypeError('plan argument has to be of type string')
             elif key in ['firewall', 'autoupdates', 'deny_unknown_domains'] and isinstance(val, bool) is False:
                 raise TypeError('{} argument has to be of type boolean'.format(key))
-            else:
-                raise AttributeError('Found unexpected argument: {}'.format(key))
 
         return Server(self._request('POST', '{}/{}'.format(SERVERS_BASE_ENDPOINT, id), params))

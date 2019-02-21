@@ -40,7 +40,5 @@ class Apps(Serverpilot):
 
                 if 8 < len(wp_admin_password) or len(wp_admin_password) > 200:
                     raise ValueError('Wordpress admin password can not be lower than 8 or bigger than 200 characters')
-            else:
-                raise AttributeError('Found invalid parameter: {}'.format(key))
 
         return App(self._request('POST', APPS_BASE_ENDPOINT, params))
