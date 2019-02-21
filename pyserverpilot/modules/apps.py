@@ -22,9 +22,9 @@ class Apps(Serverpilot):
         for key, value in params.items():
             if key in ['name', 'sysuserid', 'runtime'] and isinstance(value, str) is False:
                 raise ValueError('{} param has to be of type string'.format(key))
-            if key is 'domains' and isinstance(value, list) is False:
+            if key == 'domains' and isinstance(value, list) is False:
                 raise ValueError('{} param has to be of type list'.format(key))
-            if key is 'wordpress':
+            if key == 'wordpress':
                 if isinstance(value, dict) is False:
                     raise ValueError('{} param has to be of type dict'.format(key))
 
