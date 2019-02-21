@@ -20,23 +20,23 @@ class Apps(Serverpilot):
 
     def create_app(self, **params) -> App:
         for key, value in params.items():
-            if key in ['name', 'sysuserid', 'runtime'] and value is not str:
+            if key in ['name', 'sysuserid', 'runtime'] and isinstance(value, str) is False:
                 raise ValueError('{} param has to be of type string'.format(key))
-            if key is 'domains' and value is not list:
+            if key is 'domains' and isinstance(value, list) is False:
                 raise ValueError('{} param has to be of type list'.format(key))
             if key is 'wordpress':
-                if value is not dict:
+                if isinstance(value, dict) is False:
                     raise ValueError('{} param has to be of type dict'.format(key))
 
                 wp_values = value.items()
 
                 for wp_key, wp_val in wp_values:
-                    if wp_val is not str:
+                    if isinstance(wp_val, str) is False:
                         raise ValueError('Wordpress {} param has to be of type string'.format(wp_key))
 
                 wp_admin_password = wp_values['admin_password']
 
-                if 8 < len(wp_admin_password) > 200:
+                if 8 < len(wp_admin_password) or len(wp_admin_password) > 200:
                     raise ValueError('Wordpress admin password can not be lower than 8 or bigger than 200 characters')
 
         return App(self._request('POST', 'apps', params))
