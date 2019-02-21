@@ -25,7 +25,7 @@ class Servers(Serverpilot):
         for key, val in params.items():
             if key is 'plan' and type(val) is not str:
                 raise ValueError('plan argument has to be of type string')
-            if (key is 'firewall' or key is 'autoupdates' or key is 'deny_unknown_domains') and val is not bool:
+            if (key in ['firewall', 'autoupdates', 'deny_unknown_domains']) and val is not bool:
                 raise ValueError('{} argument has to be of type boolean'.format(key))
 
         return Server(self._request('POST', 'servers/{}'.format(id), params))
