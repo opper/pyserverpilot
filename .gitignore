@@ -16,3 +16,6 @@ venv
 
 # MacOS files
 .DS_Store
+
+# manual tests file
+tests.py

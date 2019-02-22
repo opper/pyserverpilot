@@ -2,6 +2,7 @@ from typing import List
 
 from pyserverpilot import Serverpilot
 from pyserverpilot.models.app import App
+from pyserverpilot.models.certificate import SSLCertificate
 
 AppList = List[App]
 
@@ -42,3 +43,22 @@ class Apps(Serverpilot):
                     raise ValueError('Wordpress admin password can not be lower than 8 or bigger than 200 characters')
 
         return App(self._request('POST', APPS_BASE_ENDPOINT, params))
+
+    def delete_app(self, id: str) -> None:
+        self._request('DELETE', '{}/{}'.format(APPS_BASE_ENDPOINT, id))
+
+    def update_app(self, **params) -> App:
+        for key, value in params.items():
+            if key == 'runtime' and isinstance(value, str) is False:
+                raise TypeError('{} param has to be of type string'.format(key))
+            elif key == 'domains' and isinstance(value, list) is False:
+                raise TypeError('{} param has to be of type list')
+
+        return App(self._request('POST', '{}/{}'.format(APPS_BASE_ENDPOINT, id), params))
+
+    def add_ssl(self, id: str, **params) -> SSLCertificate:
+        for key, value in params.items():
+            if isinstance(value, str) is False:
+                raise TypeError('{} has to be of type string'.format(key))
+
+        return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))

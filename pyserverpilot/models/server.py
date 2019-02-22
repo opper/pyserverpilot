@@ -1,4 +1,7 @@
-class Server:
+from pyserverpilot.models.basemodel import BaseModel
+
+
+class Server(BaseModel):
     id: str
     name: str
     plan: str
@@ -9,7 +12,3 @@ class Server:
     lastaddress: str
     lastconn: int
     datecreated: int
-
-    def __init__(self, attrs) -> None:
-        for attribute, value in attrs.items():
-            setattr(self, attribute, value)
