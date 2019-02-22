@@ -2,7 +2,8 @@
 *.pyc
 
 # Setuptools distribution folder.
-/dist/
+/dist
+/build
 
 # Virtualenv
 venv
