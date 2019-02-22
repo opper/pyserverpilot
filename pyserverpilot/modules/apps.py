@@ -62,3 +62,19 @@ class Apps(Serverpilot):
                 raise TypeError('{} param has to be of type string'.format(key))
 
         return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
+
+    def enable_auto_ssl(self, id: str) -> SSLCertificate:
+        params = {
+            'auto': True,
+        }
+
+        return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
+
+    def delete_ssl(self, id: str) -> None:
+        self._request('DELETE', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id))
+
+    def set_force_ssl(self, id: str, **params) -> SSLCertificate:
+        if isinstance(params['force'], bool) is False:
+            raise TypeError('force param has to be of type boolean')
+
+        return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
