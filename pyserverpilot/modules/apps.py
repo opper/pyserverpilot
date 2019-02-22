@@ -59,6 +59,6 @@ class Apps(Serverpilot):
     def add_ssl(self, id: str, **params) -> SSLCertificate:
         for key, value in params.items():
             if isinstance(value, str) is False:
-                raise TypeError('{} has to be of type string'.format(key))
+                raise TypeError('{} param has to be of type string'.format(key))
 
         return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
