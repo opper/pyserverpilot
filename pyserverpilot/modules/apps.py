@@ -22,7 +22,7 @@ class Apps(Serverpilot):
     def get_app(self, id: str) -> App:
         return App(self._request('GET', '{}/{}'.format(APPS_BASE_ENDPOINT, id)))
 
-    def create_app(self, **params):
+    def create_app(self, **params) -> App:
         # validate the parameters before posting to serverpilot
         CreateAppSchema().load(params)
 
