@@ -4,7 +4,10 @@ from marshmallow import Schema, fields
 class WordpressSchema(Schema):
     site_title = fields.Str(required=True)
     admin_user = fields.Str(required=True)
+
+    # Length must be between 8 and 200 characters
     admin_password = fields.Str(required=True, validate=lambda p: 8 < p < 200)
+
     admin_email = fields.Str(required=True)
 
 
