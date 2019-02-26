@@ -3,7 +3,7 @@ from typing import List
 from pyserverpilot import Serverpilot
 from pyserverpilot.models.app import App
 from pyserverpilot.models.certificate import SSLCertificate
-from pyserverpilot.schemas.app import CreateAppSchema, UpdateAppSchema
+from pyserverpilot.schemas.app import AddSSLSchema, CreateAppSchema, UpdateAppSchema
 
 AppList = List[App]
 
@@ -38,9 +38,7 @@ class Apps(Serverpilot):
         return App(self._request('POST', '{}/{}'.format(APPS_BASE_ENDPOINT, id), params))
 
     def add_ssl(self, id: str, **params) -> SSLCertificate:
-        for key, value in params.items():
-            if isinstance(value, str) is False:
-                raise TypeError('{} param has to be of type string'.format(key))
+        AddSSLSchema().load(params)
 
         return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
 

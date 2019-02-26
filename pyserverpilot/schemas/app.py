@@ -22,3 +22,9 @@ class CreateAppSchema(Schema):
 class UpdateAppSchema(Schema):
     runtime = fields.Str(required=False)
     domains = fields.List(fields.Str(), required=False)
+
+
+class AddSSLSchema(Schema):
+    key = fields.Str(required=True)
+    cert = fields.Str(required=True)
+    cacerts = fields.Str(required=True, default=None)
