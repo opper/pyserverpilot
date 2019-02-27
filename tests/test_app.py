@@ -17,7 +17,7 @@ class TestApp(object):
     app: App  # to keep track throughout this test suite
 
     @patch('pyserverpilot.serverpilot.requests.request')
-    def test_get_apps(self, mock_sp, client: AppsModule):
+    def test_create_app(self, mock_sp, client: AppsModule):
         mock_sp.return_value = MockSP('get_app')
         app_data = MockSP.create_app()['data']
 
