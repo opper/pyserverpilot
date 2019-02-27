@@ -17,9 +17,9 @@ class App(BaseModel):
     def __init__(self, attrs) -> None:
         super().__init__(attrs)
         for attribute, value in attrs.items():
-            if attribute == 'ssl':
+            if attribute == 'ssl' and value is not None:
                 setattr(self, attribute, SSLCertificate(value))
-            elif attribute == 'autossl':
+            elif attribute == 'autossl' and value is not None:
                 setattr(self, attribute, AutoSSL(value))
             else:
                 setattr(self, attribute, value)

@@ -9,7 +9,7 @@ BASE_DB_ENDPOINT = 'dbs'
 DB_List = List[DB]
 
 
-class Db(Serverpilot):
+class Dbs(Serverpilot):
     def get_dbs(self) -> DB_List:
         dbs = []
 
