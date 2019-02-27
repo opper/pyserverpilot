@@ -1,19 +1,32 @@
 class MockSP:
-    status_code = 200
-    to_call = ''
+    status_code: int
+    to_call: str
 
-    def __init__(self, method: str = ''):
+    def __init__(self, method: str = '', status_code: int = 200):
         self.to_call = method
+        self.status_code = status_code
 
     def json(self):
         return getattr(self, self.to_call)()
 
-    def get_app(self):
+    @classmethod
+    def create_app(cls):
+        return {
+            "data": {
+                "name": "superawesome-website",
+                "sysuserid": "RvnwAIfuENyjUVnl",
+                "runtime": "php7.0",
+                "domains": ["www.example.com", "example.com"],
+            }
+        }
+
+    @classmethod
+    def get_app(cls):
         return {
             "data": {
                 "id": "c77JD4gZooGjrF8K",
                 "datecreated": 1403139066,
-                "name": "blog",
+                "name": "superawesome-website",
                 "sysuserid": "RvnwAIfuENyjUVnl",
                 "domains": ["www.myblog.com", "blog.com"],
                 "ssl": None,
@@ -22,12 +35,13 @@ class MockSP:
             }
         }
 
-    def get_apps(self):
+    @classmethod
+    def get_apps(cls):
         return {
             "data": [{
                 "id": "c77JD4gZooGjrF8K",
                 "datecreated": 1403139066,
-                "name": "blog",
+                "name": "superawesome-website",
                 "sysuserid": "RvnwAIfuENyjUVnl",
                 "domains": ["www.myblog.com", "blog.com"],
                 "ssl": None,
