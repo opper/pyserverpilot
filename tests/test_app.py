@@ -4,7 +4,7 @@ import pytest
 
 from pyserverpilot import Serverpilot
 from pyserverpilot.models.app import App
-from pyserverpilot.modules import Apps
+from pyserverpilot.modules import Apps as AppsModule
 from .mock_service import MockSP
 
 
@@ -17,7 +17,7 @@ class TestApp(object):
     app: App  # to keep track throughout this test suite
 
     @patch('pyserverpilot.serverpilot.requests.request')
-    def test_get_apps(self, mock_sp, client: Apps):
+    def test_get_apps(self, mock_sp, client: AppsModule):
         mock_sp.return_value = MockSP('get_app')
         app_data = MockSP.create_app()['data']
 
