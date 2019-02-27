@@ -1,15 +1,26 @@
 from unittest.mock import patch
 
+import pytest
+
 from pyserverpilot import Serverpilot
+from pyserverpilot.models.app import App
+from pyserverpilot.modules import Apps
 from .mock_service import MockSP
 
 
+@pytest.fixture
+def client():
+    yield Serverpilot.client('apps', client_id='test_id', api_key='test_key')
+
+
 class TestApp(object):
+    app: App  # to keep track throughout this test suite
 
     @patch('pyserverpilot.serverpilot.requests.request')
-    def test_get_apps(self, mock_sp):
-        mock_sp.return_value = MockSP('get_apps')
+    def test_get_apps(self, mock_sp, client: Apps):
+        mock_sp.return_value = MockSP('get_app')
+        app_data = MockSP.create_app()['data']
 
-        cl = Serverpilot.client('apps', client_id='test_id', api_key='test_key')
-        r = cl.get_apps()
-        assert r[0].id == 'c77JD4gZooGjrF8K'
+        response = client.create_app(**app_data)
+        assert response.name == app_data['name']
+        self.app = response
