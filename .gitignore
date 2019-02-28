@@ -20,3 +20,4 @@ venv
 
 # manual tests file
 tests.py
+.pytest_cache

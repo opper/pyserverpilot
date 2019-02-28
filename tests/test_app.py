@@ -4,7 +4,6 @@ import pytest
 from marshmallow import ValidationError
 
 from pyserverpilot import Serverpilot
-from pyserverpilot.models.app import App
 from pyserverpilot.modules import Apps as AppsModule
 from .mock_service import MockSP
 

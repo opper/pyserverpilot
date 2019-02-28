@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     setuptools.setup(
         name='pyserverpilot',
-        version='1.2',
+        version='1.2.1',
         author='opper',
         author_email='alex@opper.nl',
         description=(
