@@ -65,4 +65,4 @@ class TestApp(object):
                               'admin_user': 'admin',
                               'admin_password': 'shouldnotfail',
                               'admin_email': 'admin@website.com'
-                          })  # invalid wordpress admin password
+                          })
