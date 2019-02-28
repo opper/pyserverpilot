@@ -23,7 +23,6 @@ def shared():
 
 @patch('pyserverpilot.serverpilot.requests.request')
 class TestApp(object):
-    app: App  # to keep track throughout this test suite
 
     def test_create_app(self, mock_sp, client: AppsModule, shared):
         mock_sp.return_value = MockSP('get_app')
