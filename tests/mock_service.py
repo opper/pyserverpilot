@@ -7,7 +7,11 @@ class MockSP:
         self.status_code = status_code
 
     def json(self):
-        return getattr(self, self.to_call)()
+        if self.to_call != '':
+            return getattr(self, self.to_call)()
+        return {
+            'data': {}
+        }
 
     @classmethod
     def create_app(cls):
