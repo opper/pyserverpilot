@@ -4,6 +4,13 @@
 
 version: 2.1
 workflows:
+  test:
+    jobs:
+      - tests:
+          filters:
+            branches:
+              ignore: /^master$/
+
   deploy:
     jobs:
       - deploy:
@@ -59,3 +66,26 @@ jobs:
             . venv/bin/activate
             pip install twine
             twine upload dist/*
+
+  tests:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pip install pytest
+            python -m pytest
