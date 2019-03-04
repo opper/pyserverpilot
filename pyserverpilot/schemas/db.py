@@ -8,7 +8,7 @@ class UserSchema(Schema):
     name = fields.Str(required=True, validate=lambda n: len(n) <= 16)
 
     # No leading or trailing whitespace and the password must be at between 8 and 200 characters long
-    password = fields.Str(required=True, validate=lambda p: p[0] != ' ' and p[-1] != ' ' and 8 <= p <= 200)
+    password = fields.Str(required=True, validate=lambda p: p[0] != ' ' and p[-1] != ' ' and 8 <= len(p) <= 200)
 
 
 class CreateDBSchema(Schema):

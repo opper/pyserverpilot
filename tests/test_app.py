@@ -34,9 +34,10 @@ class TestApp(object):
 
     def test_get_app(self, mock_sp, client: AppsModule, shared):
         mock_sp.return_value = AppMock('get_app')
+        app = shared['app']
 
-        response = client.get_app(shared['app'].id)
-        assert response.id == shared['app'].id
+        response = client.get_app(app.id)
+        assert response.id == app.id
 
     def test_app_create_validation(self, mock_sp, client: AppsModule):
         with pytest.raises(ValidationError):
