@@ -27,4 +27,8 @@ class UpdateAppSchema(Schema):
 class AddSSLSchema(Schema):
     key = fields.Str(required=True)
     cert = fields.Str(required=True)
-    cacerts = fields.Str(required=True, default=None)
+    cacerts = fields.Str(required=True, default=None, allow_none=True)
+
+
+class ForceSSLSchema(Schema):
+    force = fields.Bool(required=True)

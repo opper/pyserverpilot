@@ -40,6 +40,21 @@ class MockSP:
         }
 
     @classmethod
+    def update_app(cls):
+        return {
+            "data": {
+                "id": "c77JD4gZooGjrF8K",
+                "datecreated": 1403139066,
+                "name": "superawesome-website",
+                "sysuserid": "RvnwAIfuENyjUVnl",
+                "domains": ["www.myshop.com", "myshop.com"],
+                "ssl": None,
+                "serverid": "4zGDDO2xg30yEeum",
+                "runtime": "php7.2"
+            }
+        }
+
+    @classmethod
     def get_apps(cls):
         return {
             "data": [{
@@ -67,4 +82,25 @@ class MockSP:
                 "serverid": "4zGDDO2xg30yEeum",
                 "runtime": "php7.0"
             }],
+        }
+
+    @classmethod
+    def add_ssl(cls):
+        return {
+            "data": {
+                "key": "sslkey",
+                "cert": "sslcert"
+            }
+        }
+
+    @classmethod
+    def set_force_ssl(cls):
+        return {
+            "data": {
+                "key": "sslkey",
+                "cert": "sslcert",
+                "cacerts": "cacert",
+                "auto": False,
+                "force": True,
+            }
         }

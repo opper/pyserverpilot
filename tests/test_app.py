@@ -4,6 +4,7 @@ import pytest
 from marshmallow import ValidationError
 
 from pyserverpilot import Serverpilot
+from pyserverpilot.models.app import App as AppModel
 from pyserverpilot.modules import Apps as AppsModule
 from .mock_service import MockSP
 
@@ -37,7 +38,7 @@ class TestApp(object):
         response = client.get_app(shared['app'].id)
         assert response.id == shared['app'].id
 
-    def test_app_validation(self, mock_sp, client: AppsModule):
+    def test_app_create_validation(self, mock_sp, client: AppsModule):
         with pytest.raises(ValidationError):
             client.create_app()  # no parameters
 
@@ -54,6 +55,17 @@ class TestApp(object):
                               domains=['website.com', 'www.website.com'],
                               wordpress={})  # invalid worpdress fields
 
+            client.create_app(name='app',
+                              sysuserid='userid',
+                              runtime='php7.1',
+                              domains=['website.com', 'www.website.com'],
+                              wordpress={
+                                  'site_title': 'Awesome site',
+                                  'admin_user': 'admin',
+                                  'admin_password': 'fail',  # should fail because of invalid password
+                                  'admin_email': 'admin@website.com'
+                              })
+
         mock_sp.return_value = MockSP('')
         client.create_app(name='app',
                           sysuserid='userid',
@@ -65,3 +77,43 @@ class TestApp(object):
                               'admin_password': 'shouldnotfail',
                               'admin_email': 'admin@website.com'
                           })
+
+    def test_update_app_validation(self, mock_sp, client: AppsModule, shared):
+        app = shared['app']  # type: AppModel
+
+        with pytest.raises(ValidationError):
+            client.update_app(app.id, domains="website.com")  # invalid parameter type
+
+        mock_sp.return_value = MockSP('update_app')
+        response = client.update_app(app.id, domains=['www.myshop.com', 'myshop.com'], runtime='php7.1')
+
+        assert response.id == app.id
+        assert response.runtime == 'php7.2'
+
+    def test_add_ssl(self, mock_sp, client: AppsModule, shared):
+        app = shared['app']  # type: AppModel
+
+        with pytest.raises(ValidationError):
+            client.add_ssl(app.id)  # missing params
+
+            client.add_ssl(app.id, key=123, cert='sslcert', cacerts='sslcacert')  # invalid parameter type
+
+        mock_sp.return_value = MockSP('add_ssl')
+        response = client.add_ssl(app.id, key='sslkey', cert='sslcert', cacerts=None)
+
+        assert response.key == 'sslkey'
+        assert response.cert == 'sslcert'
+
+    def test_enable_force_ssl(self, mock_sp, client: AppsModule, shared):
+        app = shared['app']  # type: AppModel
+
+        with pytest.raises(ValidationError):
+            # client.set_force_ssl(app.id)
+
+            client.set_force_ssl(app.id, force="yes")  # invalid parameter type
+
+        mock_sp.return_value = MockSP('set_force_ssl')
+        response = client.set_force_ssl(app.id, force=True)
+
+        assert response.key == app.ssl.key
+        assert response.force is True

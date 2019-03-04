@@ -3,7 +3,7 @@ from typing import List
 from pyserverpilot import Serverpilot
 from pyserverpilot.models.app import App
 from pyserverpilot.models.certificate import SSLCertificate
-from pyserverpilot.schemas.app import AddSSLSchema, CreateAppSchema, UpdateAppSchema
+from pyserverpilot.schemas.app import AddSSLSchema, CreateAppSchema, ForceSSLSchema, UpdateAppSchema
 
 AppList = List[App]
 
@@ -31,7 +31,7 @@ class Apps(Serverpilot):
     def delete_app(self, id: str) -> None:
         self._request('DELETE', '{}/{}'.format(APPS_BASE_ENDPOINT, id))
 
-    def update_app(self, **params) -> App:
+    def update_app(self, id: str, **params) -> App:
         # validate the parameters before posting to serverpilot
         UpdateAppSchema().load(params)
 
@@ -53,7 +53,6 @@ class Apps(Serverpilot):
         self._request('DELETE', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id))
 
     def set_force_ssl(self, id: str, **params) -> SSLCertificate:
-        if isinstance(params['force'], bool) is False:
-            raise TypeError('force param has to be of type boolean')
+        ForceSSLSchema().load(params)
 
         return SSLCertificate(self._request('POST', '{}/{}/ssl'.format(APPS_BASE_ENDPOINT, id), params))
