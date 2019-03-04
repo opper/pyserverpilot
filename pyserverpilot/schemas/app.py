@@ -31,4 +31,4 @@ class AddSSLSchema(Schema):
 
 
 class ForceSSLSchema(Schema):
-    force = fields.Bool(required=True)
+    force = fields.Bool(required=True, truthy={True}, falsy={False})

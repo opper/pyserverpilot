@@ -104,11 +104,13 @@ class TestApp(object):
         assert response.key == 'sslkey'
         assert response.cert == 'sslcert'
 
+        app.ssl = response
+
     def test_enable_force_ssl(self, mock_sp, client: AppsModule, shared):
         app = shared['app']  # type: AppModel
 
         with pytest.raises(ValidationError):
-            # client.set_force_ssl(app.id)
+            client.set_force_ssl(app.id)
 
             client.set_force_ssl(app.id, force="yes")  # invalid parameter type
 
