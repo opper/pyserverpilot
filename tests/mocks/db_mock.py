@@ -54,3 +54,18 @@ class DbMock(BaseMock):
                 }
             }
         }
+
+    @classmethod
+    def update_db(cls):
+        return {
+            "data": {
+                "id": "a2SJNvzDJxSbZaMX",
+                "name": "shopify",
+                "appid": "B1w7yc1tfUPQLIKS",
+                "serverid": "4zGDDO2xg30yEeum",
+                "user": {
+                    "id": "j2P1zZ9xTusGjy16",
+                    "name": "jerry"
+                }
+            }
+        }

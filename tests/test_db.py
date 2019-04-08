@@ -78,3 +78,44 @@ class TestDb(object):
                                  'password': 'BaOWYl3IjMc4raBe',
                                  'hello': 'extraparam'  # extra invalid param
                              })
+
+    def test_update_db(self, mock_sp, client: DbsModule, shared):
+        db = shared['db']
+
+        with pytest.raises(ValidationError):
+            client.update_db(db.id)  # no params error
+
+            client.update_db(db.id, user={})  # invalid user schema
+
+            client.update_db(db.id,
+                             user={
+                                 'name': 'superlongnameshouldbeinvalid',  # invalid username
+                                 'password': 'BaOWYl3IjMc4raBe'
+                             })
+
+            client.update_db(db.id,
+                             user={
+                                 'name': 'username',
+                                 'password': 'passw',  # invalid password
+                             })
+
+            client.update_db(db.id,
+                             user={
+                                 'name': 'username',
+                                 'password': 'BaOWYl3IjMc4raBe',
+                                 'hello': 'extraparam'  # extra invalid param
+                             })
+
+        new_user = {
+            'name': 'jerry',
+            'password': 'BaOWYl3IjMc4raBe'
+        }
+
+        mock_sp.return_value = DbMock('update_db')
+        client.update_db(db.id, user=new_user)
+
+        mock_sp.return_value = DbMock('update_db')
+
+        response = client.get_db(shared['db'].id)
+
+        assert response.user['name'] == new_user['name']
