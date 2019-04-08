@@ -6,7 +6,7 @@ from marshmallow import ValidationError
 from pyserverpilot import Serverpilot
 from pyserverpilot.models.app import App as AppModel
 from pyserverpilot.modules import Apps as AppsModule
-from .mock_service import MockSP
+from .mocks.app_mock import AppMock
 
 
 @pytest.fixture
@@ -25,24 +25,25 @@ def shared():
 class TestApp(object):
 
     def test_create_app(self, mock_sp, client: AppsModule, shared):
-        mock_sp.return_value = MockSP('get_app')
-        app_data = MockSP.create_app()['data']
+        mock_sp.return_value = AppMock('get_app')
+        app_data = AppMock.create_app()['data']
 
         response = client.create_app(**app_data)
         assert response.name == app_data['name']
         shared['app'] = response
 
     def test_get_app(self, mock_sp, client: AppsModule, shared):
-        mock_sp.return_value = MockSP('get_app')
+        mock_sp.return_value = AppMock('get_app')
+        app = shared['app']
 
-        response = client.get_app(shared['app'].id)
-        assert response.id == shared['app'].id
+        response = client.get_app(app.id)
+        assert response.id == app.id
 
     def test_app_create_validation(self, mock_sp, client: AppsModule):
         with pytest.raises(ValidationError):
             client.create_app()  # no parameters
 
-            client.create_app(**MockSP.create_app(), unknown_param='should trigger error')  # unknown parameters
+            client.create_app(**AppMock.create_app(), unknown_param='should trigger error')  # unknown parameters
 
             client.create_app(name='app',
                               sysuserid='userid',
@@ -66,7 +67,7 @@ class TestApp(object):
                                   'admin_email': 'admin@website.com'
                               })
 
-        mock_sp.return_value = MockSP('')
+        mock_sp.return_value = AppMock('')
         client.create_app(name='app',
                           sysuserid='userid',
                           runtime='php7.1',
@@ -84,7 +85,7 @@ class TestApp(object):
         with pytest.raises(ValidationError):
             client.update_app(app.id, domains="website.com")  # invalid parameter type
 
-        mock_sp.return_value = MockSP('update_app')
+        mock_sp.return_value = AppMock('update_app')
         response = client.update_app(app.id, domains=['www.myshop.com', 'myshop.com'], runtime='php7.1')
 
         assert response.id == app.id
@@ -98,7 +99,7 @@ class TestApp(object):
 
             client.add_ssl(app.id, key=123, cert='sslcert', cacerts='sslcacert')  # invalid parameter type
 
-        mock_sp.return_value = MockSP('add_ssl')
+        mock_sp.return_value = AppMock('add_ssl')
         response = client.add_ssl(app.id, key='sslkey', cert='sslcert', cacerts=None)
 
         assert response.key == 'sslkey'
@@ -114,7 +115,7 @@ class TestApp(object):
 
             client.set_force_ssl(app.id, force="yes")  # invalid parameter type
 
-        mock_sp.return_value = MockSP('set_force_ssl')
+        mock_sp.return_value = AppMock('set_force_ssl')
         response = client.set_force_ssl(app.id, force=True)
 
         assert response.key == app.ssl.key
